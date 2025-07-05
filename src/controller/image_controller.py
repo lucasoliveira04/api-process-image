@@ -1,5 +1,7 @@
 from flask import Blueprint, request, jsonify
 from services.image_services import image_services
+from cache.redis_cache_configuration import redis_client
+import json
 
 image_controller = Blueprint('image_controller', __name__)
 
@@ -18,6 +20,17 @@ def process_image(image_width, image_height):
         return result, 400 
     
     return result, 200
+
+@image_controller.route('/<image_id>', methods=['GET'])
+def get_image_by_id(image_id):
+    image_data = redis_client.get(image_id)
+    if not image_data:
+        return {"error": "Image not found"}, 404
+
+    image_data = json.loads(str(image_data))
+    print(f"Dados da imagem para ID {image_id}: {json.dumps(image_data, indent=2)}")
+    return jsonify(image_data), 200
+
 
 @image_controller.route('/', methods=['GET'])
 def get_images():
