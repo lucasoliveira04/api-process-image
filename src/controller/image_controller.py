@@ -30,8 +30,3 @@ def get_image_by_id(image_id):
     image_data = json.loads(str(image_data))
     print(f"Dados da imagem para ID {image_id}: {json.dumps(image_data, indent=2)}")
     return jsonify(image_data), 200
-
-
-@image_controller.route('/', methods=['GET'])
-def get_images():
-    return {"images": [], "message": "No images found."}, 404
