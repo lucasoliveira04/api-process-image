@@ -26,7 +26,7 @@ def image_services(file, image_width: int, image_height: int):
             "imagePath": str(file_path)
         }
 
-        print("📤 Mensagem enviada para a fila:")
+        print("Message sent to queue:")
         print(json.dumps(message, indent=2))
 
         connection, channel = get_channel()

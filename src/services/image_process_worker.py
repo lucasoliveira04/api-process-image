@@ -42,9 +42,9 @@ def process_image_task(body):
         )
 
         redis_client.set(image_id, json.dumps(image_model.to_dict()))
-        print(f"Imagem processada: {filename}")
+        print(f"Image processed: {filename}")
     except Exception as e:
-        print(f"Erro ao processar imagem: {e}")
+        print(f"Error processing image: {e}")
 
 def main():
     connection, channel = get_channel()
@@ -53,7 +53,7 @@ def main():
     def callback(ch, method, properties, body):
         process_image_task(body)
 
-    print("[*] Worker aguardando mensagens...")
+    print("Worker waiting for messages.")
     channel.basic_consume(queue="image_processing", on_message_callback=callback, auto_ack=True)
     channel.start_consuming()
 
@@ -62,7 +62,7 @@ if __name__ == "__main__":
         try:
             main()
         except Exception as e:
-            print(f"Erro na conexão com RabbitMQ: {e}")
-            print("Tentando reconectar em 5 segundos...")
+            print(f"Error connecting to RabbitMQ: {e}")
+            print("Retrying in 5 seconds...")
             time.sleep(5)
 

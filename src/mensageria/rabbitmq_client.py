@@ -22,9 +22,9 @@ def get_connection(max_retries=10, delay=3):
         try:
             return BlockingConnection(params)
         except exceptions.AMQPConnectionError as e:
-            print(f"[{attempt}/{max_retries}] RabbitMQ não disponível, tentando em {delay}s…")
+            print(f"[{attempt}/{max_retries}] RabbitMQ not available, retrying in {delay}s...")
             time.sleep(delay)
-    raise RuntimeError("Não foi possível conectar ao RabbitMQ depois de várias tentativas")
+    raise RuntimeError("Could not connect to RabbitMQ after several attempts")
 
 def get_channel():
     connection = get_connection()
